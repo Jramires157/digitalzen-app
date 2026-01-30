@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - DigitalZen</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="dashboard-page">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>🧘 DigitalZen</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="nav-item active" data-page="dashboard">
+                <span class="nav-icon">📊</span>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" data-page="goals">
+                <span class="nav-icon">🎯</span>
+                <span>Minhas Metas</span>
+            </a>
+            <a href="#" class="nav-item" data-page="marketplace">
+                <span class="nav-icon">🛒</span>
+                <span>Marketplace</span>
+            </a>
+            <a href="#" class="nav-item" data-page="transactions">
+                <span class="nav-icon">💳</span>
+                <span>Transações</span>
+            </a>
+            <a href="#" class="nav-item" data-page="leaderboard">
+                <span class="nav-icon">🏆</span>
+                <span>Ranking</span>
+            </a>
+            <a href="#" class="nav-item" data-page="profile">
+                <span class="nav-icon">👤</span>
+                <span>Perfil</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="btn-logout" onclick="handleLogout()">
+                <span>🚪</span>
+                Sair
+            </button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Top Bar -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+                <h1 id="pageTitle">Dashboard</h1>
+            </div>
+            <div class="topbar-right">
+                <div class="user-info">
+                    <span class="user-name" id="userName">Carregando...</span>
+                    <div class="user-avatar" id="userAvatar">👤</div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Wallet Card -->
+        <section class="wallet-card">
+            <div class="wallet-info">
+                <div class="wallet-label">💎 Seu Saldo</div>
+                <div class="wallet-balance" id="walletBalance">0</div>
+                <div class="wallet-subtitle">ZenCoins</div>
+            </div>
+            <div class="wallet-stats">
+                <div class="wallet-stat">
+                    <div class="stat-value" id="todayEarnings">+0</div>
+                    <div class="stat-label">Hoje</div>
+                </div>
+                <div class="wallet-stat">
+                    <div class="stat-value" id="weekEarnings">+0</div>
+                    <div class="stat-label">Esta Semana</div>
+                </div>
+                <div class="wallet-stat">
+                    <div class="stat-value" id="totalEarned">0</div>
+                    <div class="stat-label">Total Ganho</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Page -->
+        <div id="dashboardPage" class="page-content active">
+            <!-- Quick Stats -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">🔥</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="streakDays">0</div>
+                        <div class="stat-text">Dias de Sequência</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">✅</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="goalsCompleted">0</div>
+                        <div class="stat-text">Metas Completas</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">⚡</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="userLevel">1</div>
+                        <div class="stat-text">Nível Atual</div>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">📱</div>
+                    <div class="stat-content">
+                        <div class="stat-number" id="screenTimeSaved">0h</div>
+                        <div class="stat-text">Tempo Economizado</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Today's Goals -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>🎯 Metas de Hoje</h2>
+                    <button class="btn-add" onclick="openAddGoalModal()">+ Nova Meta</button>
+                </div>
+                <div id="todayGoalsList" class="goals-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">🎯</div>
+                        <p>Nenhuma meta definida ainda</p>
+                        <button class="btn-primary" onclick="openAddGoalModal()">Criar Primeira Meta</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>📊 Atividade Recente</h2>
+                </div>
+                <div id="recentActivity" class="activity-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">📊</div>
+                        <p>Nenhuma atividade ainda</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Goals Page -->
+        <div id="goalsPage" class="page-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>🎯 Todas as Minhas Metas</h2>
+                    <button class="btn-add" onclick="openAddGoalModal()">+ Nova Meta</button>
+                </div>
+                <div id="allGoalsList" class="goals-list">
+                    <!-- Goals will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Marketplace Page -->
+        <div id="marketplacePage" class="page-content">
+            <div class="marketplace-header">
+                <h2>🛒 Marketplace</h2>
+                <p class="marketplace-subtitle">Troque seus ZenCoins por prêmios reais</p>
+                <div class="conversion-info">
+                    💡 <strong>Taxa de Conversão:</strong> 1.000 ZenCoins = R$ 10,00
+                </div>
+            </div>
+            <div class="marketplace-grid" id="marketplaceGrid">
+                <!-- Marketplace items will be loaded here -->
+            </div>
+        </div>
+
+        <!-- Transactions Page -->
+        <div id="transactionsPage" class="page-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>💳 Histórico de Transações</h2>
+                </div>
+                <div id="transactionsList" class="transactions-list">
+                    <div class="empty-state">
+                        <div class="empty-icon">💳</div>
+                        <p>Nenhuma transação ainda</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Leaderboard Page -->
+        <div id="leaderboardPage" class="page-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>🏆 Ranking Global</h2>
+                </div>
+                <div id="leaderboardList" class="leaderboard-list">
+                    <!-- Leaderboard will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profilePage" class="page-content">
+            <div class="section-card">
+                <div class="section-header">
+                    <h2>👤 Meu Perfil</h2>
+                </div>
+                <div class="profile-content">
+                    <div class="profile-avatar">
+                        <div class="avatar-large" id="profileAvatar">👤</div>
+                        <h3 id="profileName">Carregando...</h3>
+                        <p id="profileEmail">email@example.com</p>
+                    </div>
+                    <div class="profile-stats">
+                        <div class="profile-stat">
+                            <span class="profile-stat-label">Membro desde</span>
+                            <span class="profile-stat-value" id="memberSince">-</span>
+                        </div>
+                        <div class="profile-stat">
+                            <span class="profile-stat-label">Nível</span>
+                            <span class="profile-stat-value" id="profileLevel">1</span>
+                        </div>
+                        <div class="profile-stat">
+                            <span class="profile-stat-label">Total de ZenCoins</span>
+                            <span class="profile-stat-value" id="profileCoins">0 💎</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Add Goal Modal -->
+    <div id="addGoalModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>➕ Criar Nova Meta</h3>
+                <button class="modal-close" onclick="closeAddGoalModal()">&times;</button>
+            </div>
+            <form id="addGoalForm" onsubmit="handleAddGoal(event)">
+                <div class="form-group">
+                    <label>Nome da Meta</label>
+                    <input type="text" id="goalName" required placeholder="Ex: Yoga matinal">
+                </div>
+                <div class="form-group">
+                    <label>Categoria</label>
+                    <select id="goalCategory" required>
+                        <option value="">Selecione...</option>
+                        <option value="exercise">🏃 Atividade Física</option>
+                        <option value="meditation">🧘 Meditação</option>
+                        <option value="reading">📚 Leitura</option>
+                        <option value="screen">📱 Limite de Tela</option>
+                        <option value="hydration">💧 Hidratação</option>
+                        <option value="sleep">😴 Sono</option>
+                        <option value="social">👥 Tempo Social</option>
+                        <option value="hobby">🎨 Hobby</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Duração (minutos)</label>
+                    <input type="number" id="goalDuration" required min="5" placeholder="30">
+                </div>
+                <div class="form-group">
+                    <label>Recompensa</label>
+                    <input type="number" id="goalReward" required min="10" placeholder="50" value="50">
+                    <small>ZenCoins que você ganhará ao completar</small>
+                </div>
+                <button type="submit" class="btn-primary">Criar Meta</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Success/Error Toast -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner"></div>
+        <p>Carregando...</p>
+    </div>
+
+    <!-- Firebase -->
+    <script type="module" src="js/firebase-config.js"></script>
+    <script type="module" src="js/dashboard.js"></script>
+</body>
+</html>
